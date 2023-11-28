@@ -1,0 +1,14 @@
+body{
+    background-color: rgb(244 244 244);
+    font-family: "Roboto", sans-serif !important;
+}
+.my_form input[type="text"],.my_form input[type="number"],.my_form textarea,.my_form select{
+    padding: 10px;
+    border-radius: 5px;
+    border-color: #a1a1a1;
+}
+.my_form input[type="text"]:focus,.my_form input[type="number"]:focus,.my_form textarea:focus,.my_form select:focus{
+    box-shadow: none;
+}
+.list_images_qrcode img{width: 100%;}
+.list_images_qrcode p{font-size: 14px;}
