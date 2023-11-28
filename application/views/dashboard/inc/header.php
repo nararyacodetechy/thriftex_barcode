@@ -3,6 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex">
+	<meta name="googlebot" content="noindex">
+	<meta name="robots" content="noindex">
+	<meta name="googlebot" content="noindex">
     <title>Thriftex - Admin</title>
     <link href="<?= get_template_directory_asst('','assets/bootstrap/css/bootstrap.min.css') ?>" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,700,700i,900,900i|Source+Sans+Pro:300,300i,400,400i,600,600i,700,700i,900,900i&display=swap" rel="stylesheet">
