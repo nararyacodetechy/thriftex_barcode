@@ -47,13 +47,13 @@ class Auths extends MY_Controller {
                         'token' => $cek_login['token']
                     );
                     $this->session->set_userdata($data_login);
-                    $cookie = array(
-                        'name'   => 'ath',
-                        'value'  => $cek_login['token'],
-                        'expire' =>  92000,
-                        'secure' => false
-                    );
-                    $this->input->set_cookie($cookie); 
+                    // $cookie = array(
+                    //     'name'   => 'ath',
+                    //     'value'  => $cek_login['token'],
+                    //     'expire' =>  92000,
+                    //     'secure' => false
+                    // );
+                    // $this->input->set_cookie($cookie); 
                     $response = array(
                         'status' => true,
                         'redirect_url'  => base_url()

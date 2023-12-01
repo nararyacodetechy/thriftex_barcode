@@ -9,4 +9,11 @@ class Barcode_model extends MY_Model
 	protected $_order_by = 'id';
 	protected $_order_by_type = 'desc';
     
+	public function list_barcode($id_user){
+		$this->db->select('tbl_barcode.*,tbl_barcode_profile.nama_brand');
+		$this->db->join('tbl_barcode_profile','tbl_barcode.id_profile_barcode = tbl_barcode_profile.id','join');
+		$this->db->where('tbl_barcode.user_id',$id_user);
+		$this->db->where('tbl_barcode.status','publish');
+		return $this->db->get($this->_table_name)->result();
+	}
 }

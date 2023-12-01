@@ -12,3 +12,108 @@ body{
 }
 .list_images_qrcode img{width: 100%;}
 .list_images_qrcode p{font-size: 14px;}
+
+
+
+/* upload form */
+.upload-btn-wrapper {
+	position: relative;
+	overflow: hidden;
+	display: inline-block;
+	cursor: pointer;
+    width: 100%;
+}
+.upload-btn-wrapper>.btn {
+	border: 2px dashed #000000;
+	color: #000000;
+	background-color: white;
+	padding: 15px;
+	border-radius: 5px;
+	font-size: 20px;
+	font-weight: bold;
+	width: 100%;
+	cursor: pointer;
+	height: 130px;
+	max-height: 130px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	position: relative;
+}
+.upload-btn-wrapper:hover>.btn,
+.upload-btn-wrapper:hover>.btn>i,
+.upload-btn-wrapper:hover>.btn>p {
+	border-color: #000;
+	color: #000;
+	cursor: pointer;
+}
+.upload-btn-wrapper>.btn>div.remove_img {
+	display: none;
+	position: absolute;
+	bottom: 0;
+	font-size: 10px;
+	color: red;
+	z-index: 100;
+	cursor: pointer;
+	background: white;
+	padding: 4px 7px;
+	box-shadow: 0px 2px 6px -4px black;
+	border-radius: 50%;
+}
+
+.upload-btn-wrapper>.btn>i {
+	font-size: 30px;
+}
+.upload-btn-wrapper>.btn>p {
+	margin: 0;
+	padding: 0;
+	font-size: 9px;
+  font-weight: 400;
+}
+.upload-btn-wrapper input[type=file] {
+	font-size: 100px;
+	position: absolute;
+	left: 0;
+	top: 0;
+	opacity: 0;
+  width: 100%;
+  height: 100%;
+}
+.upload-btn-wrapper>.btn>img {
+	position: absolute;
+	top: 0;
+	width: auto;
+	height: 100%;
+	padding: 4px;
+	object-fit: cover;
+	align-items: center;
+	margin: 0px auto;
+	max-width: 100%;
+}
+.upload-btn-wrapper>.remove-images-upload-select{
+    display: none;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    background-color: #353535;
+    border-radius: 2em;
+    font-size: 12px;
+    color: white;
+    width: 25px;
+    height: 25px;
+    padding: 3px;
+    text-align: center;
+}
+.upload-btn-wrapper>.remove-images-upload-select.show{display: block;}
+
+.url_toko{
+    position: absolute;
+    top: 16px;
+    left: 25px;
+    color: #858585;
+}
+
+.input_url_toko{
+    padding-left: 6rem !important;
+}

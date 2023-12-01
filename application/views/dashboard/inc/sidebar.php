@@ -3,9 +3,9 @@
         <div>
             <div class="mb-4 border-bottom pb-3"><h4>Helo</h4></div>
             <ul class="nav flex-column nav-menu-home">
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     <a class="nav-link p-3 ps-2 pe-2 link-dark active" aria-current="page" href="<?= base_url('') ?>">Dashboard</a>
-                </li>
+                </li> -->
                 <li class="nav-item">
                     <a class="nav-link p-3 ps-2 pe-2 link-dark " href="<?= base_url('barcode') ?>">Register Barcode</a>
                 </li>

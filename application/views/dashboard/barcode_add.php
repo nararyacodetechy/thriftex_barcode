@@ -11,17 +11,24 @@
                             <a href="<?= base_url('barcode/new') ?>" class="btn btn-dark">Simpan</a>
                         </div>
                         <h4>Input data produk</h4>
-                        <form action="<?= base_url('barcode/create') ?>" method="post" class="my_form mt-5" id="barcode_create">
+                        <?php if(!empty($data_profile)){ ?>
+                        <form action="<?= base_url('barcode/create') ?>" method="post" class="my_form mt-5" id="barcode_create" enctype="multipart/form-data">
                             <div class="mb-3 row">
                                 <label for="nama_brand" class="col-sm-2 col-form-label">Nama Brand</label>
                                 <div class="col-md-5">
-                                    <input type="text" name="nama_brand" class="form-control p-3" id="nama_brand" required value="<?= (!empty($data_copy)) ? $data_copy->nama_brand :'' ?>">
+                                    <input type="text" name="nama_brand" class="form-control p-3" id="nama_brand" required value="<?= $data_profile->nama_brand ?>" disabled>
                                 </div>
                             </div>
                             <div class="mb-3 row">
                                 <label for="nama_produk" class="col-sm-2 col-form-label">Nama Produk</label>
                                 <div class="col-md-7">
                                     <input type="text" name="nama_produk" class="form-control p-3" id="nama_produk" required value="<?= (!empty($data_copy)) ? $data_copy->nama_produk :'' ?>">
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label for="nama_produk" class="col-sm-2 col-form-label">Foto Produk</label>
+                                <div class="col-md-7">
+                                    <div class="picker_image_produk d-flex row g-3"></div>
                                 </div>
                             </div>
                             <div class="mb-3 row">
@@ -71,10 +78,14 @@
                             </div> -->
                             <div class="mb-3 row">
                                 <div class="col-md-5">
-                                    <button type="submit" class="btn btn-dark btn-lg rounded-3 ps-4 pe-4 barcode_create">Kirim</button>
+                                    <button type="submit" class="btn btn-dark btn-lg rounded-3 ps-4 pe-4 barcode_create" data-defaulttext="Kirim" >Kirim</button>
                                 </div>
                             </div>
                         </form>
+                        <?php }else{ ?>
+                            <div class="alert alert-warning">Mohon Lengkapi data profile dahulu!</div>
+                            <a href="<?= base_url('profile') ?>" class="btn btn-sm btn-dark">Lengkapi Profile</a>
+                        <?php } ?>
                     </div>
                 </div>
             </div>

@@ -67,3 +67,6 @@ $route['barcode/saveedit/(:num)'] = 'Barcode/barcode_edit_save/$1';
 $route['barcode/cetak/(:num)'] = 'Barcode/barcode_cetak/$1';
 $route['barcode/download/(:num)'] = 'Barcode/barcode_download/$1';
 $route['testing'] = 'Barcode/testing';
+
+$route['profile'] = 'Profile/index';
+$route['profile/save'] = 'Profile/save_profile';

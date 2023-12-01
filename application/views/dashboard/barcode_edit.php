@@ -15,7 +15,7 @@
                             <div class="mb-3 row">
                                 <label for="nama_brand" class="col-sm-2 col-form-label">Nama Brand</label>
                                 <div class="col-md-5">
-                                    <input type="text" name="nama_brand" class="form-control p-3" id="nama_brand" required value="<?= (!empty($data_edit)) ? $data_edit->nama_brand :'' ?>">
+                                    <input type="text" name="nama_brand" class="form-control p-3" id="nama_brand" required value="<?= $data_profile->nama_brand ?>" disabled>
                                 </div>
                             </div>
                             <div class="mb-3 row">
@@ -65,7 +65,7 @@
                             </div>
                             <div class="mb-3 row">
                                 <div class="col-md-5">
-                                    <button type="submit" class="btn btn-dark btn-lg rounded-3 ps-4 pe-4 barcode_create">Simpan</button>
+                                    <button type="submit" class="btn btn-dark btn-lg rounded-3 ps-4 pe-4 barcode_create" data-defaulttext="Simpan">Simpan</button>
                                 </div>
                             </div>
                         </form>
