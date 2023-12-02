@@ -16,4 +16,13 @@ class Barcode_model extends MY_Model
 		$this->db->where('tbl_barcode.status','publish');
 		return $this->db->get($this->_table_name)->result();
 	}
+
+	public function barcode_single($condition=null){
+		$this->db->select('tbl_barcode.*,tbl_barcode_profile.nama_brand,tbl_barcode_profile.url_toko');
+		$this->db->join('tbl_barcode_profile','tbl_barcode.id_profile_barcode = tbl_barcode_profile.id','join');
+		if(!empty($condition)){
+			$this->db->where($condition);
+		}
+		return $this->db->get($this->_table_name)->row();
+	}
 }

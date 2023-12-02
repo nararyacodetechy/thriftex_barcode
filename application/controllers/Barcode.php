@@ -215,14 +215,14 @@ class Barcode extends Backend_Controller {
 		$token = get_cookie('_ath');
         $data_user = $this->user->checkuser($token);
 		if($data_user['status'] == true){
-			$data_barcode = $this->barcode->get_by(array('barcode_uuid' => $id,'user_id' => $data_user['data']['user_id']),null,null,true);
+			$data_barcode = $this->barcode->barcode_single(array('tbl_barcode.barcode_uuid' => $id,'tbl_barcode.user_id' => $data_user['data']['user_id']));
 			// cek sudah ada di database
 			$cek_barcode = $this->barcode_img->get_by(array('id_barcode' => $data_barcode->id),null,null,false);
 			if($data_barcode->payment_status == 'paid'){
 				if(count($cek_barcode) < 1){
 					for ($i=1; $i <= $data_barcode->jumlah; $i++) {
 						$filenames = $data_barcode->user_kode.'-'.$data_barcode->ukuran_kode.'-'.$i.'-'.$data_barcode->jumlah.'x.png';
-						$url_data_qr = 'https://thriftex.id/'.slugify($data_barcode->nama_brand).'/'.$data_barcode->user_kode.'-'.$data_barcode->ukuran_kode.'-'.$i.'-'.$data_barcode->jumlah.'x';
+						$url_data_qr = 'https://thriftex.id/'.$data_barcode->url_toko.'/'.$data_barcode->user_kode.'-'.$data_barcode->ukuran_kode.'-'.$i.'-'.$data_barcode->jumlah.'x';
 						if(file_exists(FCPATH.'qr/'.$filenames)){
 							unlink(FCPATH.'qr/'.$filenames);
 						}
