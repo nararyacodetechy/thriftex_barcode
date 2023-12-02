@@ -228,6 +228,7 @@ class Barcode extends Backend_Controller {
 						}
 						$data_insert = array(
 							'id_barcode'	=> $data_barcode->id,
+							'barcode_kode'	=> $data_barcode->user_kode.'-'.$data_barcode->ukuran_kode.'-'.$i.'-'.$data_barcode->jumlah.'x',
 							'file_name'	=> $filenames
 						);
 						$this->barcode_img->insert($data_insert);

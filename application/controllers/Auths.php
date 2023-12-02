@@ -75,7 +75,7 @@ class Auths extends MY_Controller {
 	}
 	public function logout(){
         $this->session->sess_destroy();
-		delete_cookie('ath');
+		delete_cookie('_ath','.thriftex.id','/','');
 		redirect(base_url());
     }
 
