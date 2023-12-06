@@ -17,8 +17,10 @@ $(document).ready(function(){
         $('.notifikasi-alert').toast('show');
     }
     var image_picker_id = 1;
+    var image_picker_id2 = 100;
     var max_allowed_pick_image = 3;
-    var image_picker_el = function(image_picker_id_){
+    var max_allowed_pick_image2 = 6;
+    var image_picker_el = function(target,image_picker_id_,name){
         var image_picker = `<div class="col-6 col-lg-4 mb-2 picker_produk_${image_picker_id_}">
                             <div class="upload-btn-wrapper">
                                 <button class="btn">
@@ -30,14 +32,16 @@ $(document).ready(function(){
                                     <p>Foto</p>
                                     <img src="" id="output" class="image_thumbnails_previews_${image_picker_id_} d-none image_primary ">
                                 </button>
-                                <input type="file" name="produkimage[]" data-pick="${image_picker_id_}" class="fotoimg pickimage" data-imgtype="primary" accept="capture=camera,image/*">
-                                <div class="remove-images-upload-select rm_img_upload_${image_picker_id_}" data-pick="${image_picker_id_}"><svg width="13px" height="13px" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"><path fill="#fff" d="M195.2 195.2a64 64 0 0 1 90.496 0L512 421.504 738.304 195.2a64 64 0 0 1 90.496 90.496L602.496 512 828.8 738.304a64 64 0 0 1-90.496 90.496L512 602.496 285.696 828.8a64 64 0 0 1-90.496-90.496L421.504 512 195.2 285.696a64 64 0 0 1 0-90.496z"/></svg></div>
+                                <input type="file" name="${name}[]" data-pick="${image_picker_id_}" data-container="${target}" class="fotoimg pickimage" data-imgtype="primary" accept="capture=camera,image/*">
+                                <div class="remove-images-upload-select rm_img_upload_${image_picker_id_}" data-container="${target}" data-pick="${image_picker_id_}"><svg width="13px" height="13px" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"><path fill="#fff" d="M195.2 195.2a64 64 0 0 1 90.496 0L512 421.504 738.304 195.2a64 64 0 0 1 90.496 90.496L602.496 512 828.8 738.304a64 64 0 0 1-90.496 90.496L512 602.496 285.696 828.8a64 64 0 0 1-90.496-90.496L421.504 512 195.2 285.696a64 64 0 0 1 0-90.496z"/></svg></div>
                             </div>
                         </div>`;
-        $('.picker_image_produk').append(image_picker)
+        $(target).append(image_picker)
         image_picker_id++;
+        image_picker_id2++;
     };
-    image_picker_el(image_picker_id)
+    image_picker_el('.picker_image_produk',image_picker_id,'produkimage')
+    image_picker_el('.picker_image_produk_lokbok',image_picker_id2,'lookbook')
 
     const compressImage = async (file, { quality = 1, type = file.type }) => {
         const imageBitmap = await createImageBitmap(file);
@@ -57,11 +61,15 @@ $(document).ready(function(){
     $(document).on('change','.pickimage', async function(e){
         const targetpreview = e.target.attributes[2].value;
         const { files } = e.target;
+        var containers = $(this).data('container');
+        console.log(containers);
         if (!files.length){
             const id_element = $(this).data('pick');
             $('.picker_produk_'+id_element).remove();
-            if($('.picker_image_produk').children().length < 3){
-                image_picker_el(image_picker_id);
+            if(containers == '.picker_image_produk' && $(containers).children().length < max_allowed_pick_image){
+                image_picker_el(containers,image_picker_id,'produkimage');
+            }else if(containers == '.picker_image_produk_lokbok' && $(containers).children().length < max_allowed_pick_image2){
+                image_picker_el(containers,image_picker_id2,'lookbook')
             }
         };
         const dataTransfer = new DataTransfer();
@@ -84,25 +92,117 @@ $(document).ready(function(){
             reader.onload = function (b) {
                 $('.rm_img_upload_'+targetpreview).addClass('show');
                 $('.image_thumbnails_previews_'+targetpreview).attr('src', b.target.result);
+                console.log('.image_thumbnails_previews_'+targetpreview)
                 $('.image_thumbnails_previews_'+targetpreview).removeClass('d-none');
-                if($('.picker_image_produk').children().length < max_allowed_pick_image){
-                    image_picker_el(image_picker_id);
+                if(containers == '.picker_image_produk' && $(containers).children().length < max_allowed_pick_image){
+                    image_picker_el(containers,image_picker_id,'produkimage')
+                }else if(containers == '.picker_image_produk_lokbok' && $(containers).children().length < max_allowed_pick_image2){
+                    image_picker_el(containers,image_picker_id2,'lookbook')
                 }
             };
             reader.readAsDataURL(e.target.files[0]);
         }
     });
+    const file_chose_storage = {};
+    var index_fils = 1;
+    var itemDefault = {type:null,data:null}
+    file_chose_storage[index_fils] = itemDefault;
+    // 
+    const renderFilePreview = function(data){
+        // var el;
+        // console.log(Object.keys(data).length);
+        if(Object.keys(data).length <= max_allowed_pick_image2){
+            if(Object.keys(data).length == max_allowed_pick_image2){
+                $('.button-add-images').addClass('d-none');
+            }else{
+                $('.button-add-images').removeClass('d-none');
+            }
+            $('.list_image_lookbook').contents().not('.button-add-images').remove();
+            // console.log(data);
+            $.each(data, function(k,v){
+                if(v.type == 'upload'){
+                    var reader = new FileReader();
+                    reader.onload = function (b) {
+                        // console.log(v);
+                        var el = '<div class="col-6 col-lg-4 mb-2 img_chosed">'
+                        el += '<img src="'+b.target.result+'" id="output" class=""><div class="remove-images-upload-select" data-index="'+k+'"><svg width="13px" height="13px" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"><path fill="#fff" d="M195.2 195.2a64 64 0 0 1 90.496 0L512 421.504 738.304 195.2a64 64 0 0 1 90.496 90.496L602.496 512 828.8 738.304a64 64 0 0 1-90.496 90.496L512 602.496 285.696 828.8a64 64 0 0 1-90.496-90.496L421.504 512 195.2 285.696a64 64 0 0 1 0-90.496z"/></svg></div>'
+                        el += '</div>';
+                        $('.button-add-images').before(el);
+                    }
+                    reader.readAsDataURL(v.data);
+                }else{
+                    var el = '<div class="col-6 col-lg-4 mb-2 img_chosed">'
+                    el += '<img src="'+v.data+'" id="output" class=""><div class="remove-images-upload-select" data-index="'+k+'"><svg width="13px" height="13px" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"><path fill="#fff" d="M195.2 195.2a64 64 0 0 1 90.496 0L512 421.504 738.304 195.2a64 64 0 0 1 90.496 90.496L602.496 512 828.8 738.304a64 64 0 0 1-90.496 90.496L512 602.496 285.696 828.8a64 64 0 0 1-90.496-90.496L421.504 512 195.2 285.696a64 64 0 0 1 0-90.496z"/></svg></div>'
+                    el += '</div>';
+                    $('.button-add-images').before(el);
+                }
+            })
+        }
+    }
+    if($('.data_img_lookbook').length > 0){
+        var data_img_lookbook = jQuery.parseJSON($('.data_img_lookbook').val());
+        $.each(data_img_lookbook, function(k,v){
+            let newItem = { ...itemDefault }; 
+            newItem.type = 'database';
+            newItem.data = v.file_path;
+            // file_chose_storage[index_fils] = itemDefault;
+            file_chose_storage[index_fils] = newItem;
+            // file_chose_storage[index_fils].data = v.file_path
+            index_fils++
+        })
+        // console.log(file_chose_storage);
+        renderFilePreview(file_chose_storage)
+    }
+    $(document).on('change','.upload-image-multi > .chosefile', async function(e){
+        e.preventDefault(0);
+        const { files } = e.target;
+        const dataTransfer = new DataTransfer();
+        for (const file of files) {
+            if (!file.type.startsWith('image')) {
+                dataTransfer.items.add(file);
+                continue;
+            }
+            const compressedFile = await compressImage(file, {
+                quality: 0.3,
+                type: 'image/jpeg',
+            });
+            dataTransfer.items.add(compressedFile);
+        }
+        e.target.files = dataTransfer.files;
+        console.log(file_chose_storage);
+        // savedFiles.push(e.target.files);
+        // file_chose_storage.push(e.target.files);
+        $('.button-add-images').removeClass('d-none');
+        if (files.length){
+            if (!file_chose_storage[index_fils]) {
+                file_chose_storage[index_fils] = { ...itemDefault };
+            }
+            file_chose_storage[index_fils].type = 'upload';
+            file_chose_storage[index_fils].data = e.target.files[0]
+            index_fils++;
+            renderFilePreview(file_chose_storage)
+        }
+        // console.log(file_chose_storage)
+    })
+
+
     $(document).on('click','.remove-images-upload-select',function(e){
         e.preventDefault(0)
         const id_element = $(this).data('pick');
+        var containers = $(this).data('container');
+        var index_data = $(this).data('index');
+        delete file_chose_storage[index_data]
+        renderFilePreview(file_chose_storage);
         // if($('.picker_image_produk').children().length == max_allowed_pick_image){
         //     image_picker_el(image_picker_id);
         // }
-        if($('.picker_image_produk').children().length == max_allowed_pick_image - 1 || $('.picker_image_produk').children().length == max_allowed_pick_image){
-            image_picker_el(image_picker_id);
+        if($(containers == '.picker_image_produk' && containers).children().length == max_allowed_pick_image - 1 || $(containers).children().length == max_allowed_pick_image){
+            image_picker_el(containers,image_picker_id,'produkimage')
+        }else if(containers == '.picker_image_produk_lokbok' && $(containers).children().length == max_allowed_pick_image2 - 1 || $(containers).children().length == max_allowed_pick_image2){
+            image_picker_el(containers,image_picker_id2,'lookbook')
         }
         $('.picker_produk_'+id_element).remove();
-        console.log($('.picker_image_produk').children().length);
+        // console.log($('.picker_image_produk').children().length);
     })
 
     function convertToSlug( str ) {
@@ -128,9 +228,12 @@ $(document).ready(function(){
         btn.html(spinerloading);
 
         var formData = new FormData($('#barcode_create')[0]);
-        // savedFiles.forEach(file => {
-        //     formData.append('produkimage[]', file[0]);
-        // });
+        // file_chose_storage.forEach(file => {
+        $.each(file_chose_storage, function(k,v){
+            formData.append('lookbook[]', v.data);
+            console.log(v);
+        });
+        // console.log(formData);
         $.ajax({
             url: form.attr("action"),
             type: 'POST',

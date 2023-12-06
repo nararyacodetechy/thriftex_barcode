@@ -11,6 +11,7 @@ class Barcode extends Backend_Controller {
 			'Barcode_model' => 'barcode',
 			'Barcode_img_model' => 'barcode_img',
 			'Barcode_img_produk_model' => 'barcode_img_produk',
+			'Barcode_img_lookbook_model' => 'barcode_img_lookbook',
 			'Barcode_profile_model'       => 'barcode_profile'
 		));
 		date_default_timezone_set('Asia/Makassar');
@@ -65,6 +66,11 @@ class Barcode extends Backend_Controller {
 		$data = $this->input->post();
 		$token = get_cookie('_ath');
         $data_user = $this->user->checkuser($token);
+
+
+		// var_dump($data);
+		// var_dump($_FILES);
+		// die;
 		if($data_user['status'] == true){
 			if(isset($_FILES) && count(array_filter($_FILES['produkimage']['name'])) > 0) {
 				$data_profile = $this->barcode_profile->get_by(array('id_user' => $data_user['data']['user_id']),null,null,true);
@@ -98,6 +104,32 @@ class Barcode extends Backend_Controller {
 								'img_url'  => base_url('upload/produk/'.$dataimg['upload_data']['file_name'])
 							);
 							$this->barcode_img_produk->insert($data_insert);
+						}else{
+							$response = array(
+								'status'    => false,
+								'color'     => 'danger',
+								'msg'       => '<svg fill="#fff" width="20" height="20" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg"><title>warning</title><path d="M30.555 25.219l-12.519-21.436c-1.044-1.044-2.738-1.044-3.782 0l-12.52 21.436c-1.044 1.043-1.044 2.736 0 3.781h28.82c1.046-1.045 1.046-2.738 0.001-3.781zM14.992 11.478c0-0.829 0.672-1.5 1.5-1.5s1.5 0.671 1.5 1.5v7c0 0.828-0.672 1.5-1.5 1.5s-1.5-0.672-1.5-1.5v-7zM16.501 24.986c-0.828 0-1.5-0.67-1.5-1.5 0-0.828 0.672-1.5 1.5-1.5s1.5 0.672 1.5 1.5c0 0.83-0.672 1.5-1.5 1.5z"></path></svg> Gagal, terjadi kesalahan',
+								'error_upload' => $this->upload->display_errors()
+							);
+						}
+					}
+				}
+				for ($i = 0; $i < count(array_filter($_FILES['lookbook']['name'])); $i++) {
+					if(isset($_FILES) && is_array($_FILES) && count($_FILES)) {
+						$fileses = $_FILES;
+						$_FILES['file']['type']= $fileses['lookbook']['type'][$i];
+						$_FILES['file']['name']= $fileses['lookbook']['name'][$i];
+						$_FILES['file']['tmp_name'] = $fileses['lookbook']['tmp_name'][$i];
+						$_FILES['file']['error']= $fileses['lookbook']['error'][$i];
+						$_FILES['file']['size'] = $fileses['lookbook']['size'][$i];
+						$this->upload->initialize($this->set_upload_options_kategori());
+						if($this->upload->do_upload('file')){
+							$dataimg2 = array('upload_data' => $this->upload->data());
+							$data_insert2 = array(
+								'id_barcode' => $insert,
+								'file_path'  => base_url('upload/produk/'.$dataimg2['upload_data']['file_name'])
+							);
+							$this->barcode_img_lookbook->insert($data_insert2);
 						}else{
 							$response = array(
 								'status'    => false,
@@ -151,8 +183,11 @@ class Barcode extends Backend_Controller {
         $data_user = $this->user->checkuser($token);
 		if($data_user['status'] == true){
 			$data_edit = $this->barcode->get_by(array('barcode_uuid' => $id,'user_id' => $data_user['data']['user_id']),null,null,true);
+			$data_img_lookbook = $this->barcode_img_lookbook->get_by(array('id_barcode' => $data_edit->id),null,null,false);
+			// var_dump($data_edit);
 			$data = array(
 				'data_edit' => $data_edit,
+				'data_img_lookbook' => $data_img_lookbook,
 				'id_edit' => $id,
 				'data_profile' => $this->barcode_profile->get_by(array('id_user' => $data_user['data']['user_id']),null,null,true)
 			);
@@ -161,6 +196,7 @@ class Barcode extends Backend_Controller {
 	}
 
 	public function barcode_edit_save($id){
+		$this->load->library('upload');
 		if(!empty($id)){
 			$response = array(
 				'status' => false,
@@ -171,6 +207,13 @@ class Barcode extends Backend_Controller {
 			$token = get_cookie('_ath');
 			$data_user = $this->user->checkuser($token);
 			if($data_user['status'] == true){
+
+				// var_dump($data);
+				// foreach ($data['lookbook'] as $key) {
+				// 	var_dump($key);
+				// }
+				// var_dump($_FILES);
+				// die;
 				$data_barcode = array(
 					'barcode_uuid'	=> generateRandomNumber(5),
 					'user_id'		=> $data_user['data']['user_id'],
@@ -183,6 +226,44 @@ class Barcode extends Backend_Controller {
 					'jumlah'		=> $data['jumlah'],
 				);
 				$insert = $this->barcode->update($data_barcode,array('barcode_uuid' => $id));
+				// if(isset($_FILES) && isset($_FILES['produkimage']) || isset($_FILES['lookbook']) && count(array_filter($_FILES['produkimage']['name'])) > 0 || count(array_filter($_FILES['lookbook']['name'])) > 0) {
+				if(isset($_FILES) || isset($_FILES['lookbook']) && count(array_filter($_FILES['lookbook']['name'])) > 0) {
+					//update image
+					if(isset($data['lookbook'])){
+						foreach ($data['lookbook'] as $key) {
+							if(file_exists(FCPATH.'upload/produk/'.basename($key))){
+								unlink(FCPATH.'upload/produk/'.basename($key));
+							}
+							$this->barcode_img_lookbook->delete_by(array('file_path' => $key));
+						}
+					}
+					for ($i = 0; $i < count(array_filter($_FILES['lookbook']['name'])); $i++) {
+						if(isset($_FILES) && is_array($_FILES) && count($_FILES)) {
+							$fileses = $_FILES;
+							$_FILES['file']['type']= $fileses['lookbook']['type'][$i];
+							$_FILES['file']['name']= $fileses['lookbook']['name'][$i];
+							$_FILES['file']['tmp_name'] = $fileses['lookbook']['tmp_name'][$i];
+							$_FILES['file']['error']= $fileses['lookbook']['error'][$i];
+							$_FILES['file']['size'] = $fileses['lookbook']['size'][$i];
+							$this->upload->initialize($this->set_upload_options_kategori());
+							if($this->upload->do_upload('file')){
+								$dataimg2 = array('upload_data' => $this->upload->data());
+								$data_insert2 = array(
+									'id_barcode' => $data['id_barcode'],
+									'file_path'  => base_url('upload/produk/'.$dataimg2['upload_data']['file_name'])
+								);
+								$this->barcode_img_lookbook->insert($data_insert2);
+							}else{
+								$response = array(
+									'status'    => false,
+									'color'     => 'danger',
+									'msg'       => '<svg fill="#fff" width="20" height="20" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg"><title>warning</title><path d="M30.555 25.219l-12.519-21.436c-1.044-1.044-2.738-1.044-3.782 0l-12.52 21.436c-1.044 1.043-1.044 2.736 0 3.781h28.82c1.046-1.045 1.046-2.738 0.001-3.781zM14.992 11.478c0-0.829 0.672-1.5 1.5-1.5s1.5 0.671 1.5 1.5v7c0 0.828-0.672 1.5-1.5 1.5s-1.5-0.672-1.5-1.5v-7zM16.501 24.986c-0.828 0-1.5-0.67-1.5-1.5 0-0.828 0.672-1.5 1.5-1.5s1.5 0.672 1.5 1.5c0 0.83-0.672 1.5-1.5 1.5z"></path></svg> Gagal, terjadi kesalahan',
+									'error_upload' => $this->upload->display_errors()
+								);
+							}
+						}
+					}	
+				}
 				if($insert){
 					$response = array(
 						'status' => true,

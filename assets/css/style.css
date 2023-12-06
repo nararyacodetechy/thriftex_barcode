@@ -117,3 +117,23 @@ body{
 .input_url_toko{
     padding-left: 6rem !important;
 }
+
+.list_image_lookbook img {
+	width: 100%;
+    max-height: 130px;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 5px;
+}
+.list_image_lookbook .img_chosed{
+	position: relative;
+}
+.list_image_lookbook .remove-images-upload-select{
+	position: absolute;
+    top: -8px;
+    right: 7px;
+    background: #d52a2a;
+    padding: 2px 7px;
+    border-radius: 10px;
+	cursor: pointer;
+}
