@@ -303,7 +303,7 @@ class Barcode extends Backend_Controller {
 				if(count($cek_barcode) < 1){
 					for ($i=1; $i <= $data_barcode->jumlah; $i++) {
 						$filenames = $data_barcode->user_kode.'-'.$data_barcode->ukuran_kode.'-'.$i.'-'.$data_barcode->jumlah.'x.png';
-						$url_data_qr = 'https://thriftex.id/'.$data_barcode->url_toko.'/'.$data_barcode->user_kode.'-'.$data_barcode->ukuran_kode.'-'.$i.'-'.$data_barcode->jumlah.'x';
+						$url_data_qr = 'https://ipcode.id/'.$data_barcode->url_toko.'/'.$data_barcode->user_kode.'-'.$data_barcode->ukuran_kode.'-'.$i.'-'.$data_barcode->jumlah.'x';
 						if(file_exists(FCPATH.'qr/'.$filenames)){
 							unlink(FCPATH.'qr/'.$filenames);
 						}
