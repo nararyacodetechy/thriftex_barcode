@@ -13,6 +13,7 @@ class Profile extends Backend_Controller {
 			'Barcode_img_produk_model' => 'barcode_img_produk',
             'Barcode_profile_model'       => 'barcode_profile'
 		));
+        $this->load->library('upload');
 		date_default_timezone_set('Asia/Makassar');
 	}
 
@@ -27,12 +28,14 @@ class Profile extends Backend_Controller {
             $this->load->view('dashboard/profile.php',$data);
         }
 	}
-	
     public function save_profile(){
         $data = $this->input->post();
         $token = get_cookie('_ath');
         $data_user = $this->user->checkuser($token);
         if($data_user['status'] == true){
+
+            // $upload = $this->process_upload('files');
+            // var_dump($upload);
             $cek_profile = $this->barcode_profile->count(array('id_user' => $data_user['data']['user_id']));
             if($cek_profile > 0){
                 $data_insert = array(

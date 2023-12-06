@@ -103,14 +103,60 @@ $(document).ready(function(){
             reader.readAsDataURL(e.target.files[0]);
         }
     });
+
+
+
+    //new method upload image multi
+    const file_FP_chose_storage = {};
+    const file_FP_storage_deleted = {};
+    var FP_index_fils = 1;
+    var FP_index_delete = 1;
+    var FP_itemDefault = {type:null,id_file:null,data:null}
+    var FP_itemDefaultDelete = {id_media:null,type:null}
+    file_FP_storage_deleted[FP_index_delete] = FP_itemDefaultDelete;
+    file_FP_chose_storage[FP_index_fils] = FP_itemDefault;
+
+    const renderFilePreview_FP = function(datas){
+        if(Object.keys(datas).length <= max_allowed_pick_image){
+            if(Object.keys(datas).length == max_allowed_pick_image){
+                $('.button-add-images-fp').addClass('d-none');
+            }else{
+                $('.button-add-images-fp').removeClass('d-none');
+            }
+            $('.list_image_foto_produk').contents().not('.button-add-images-fp').remove();
+            $.each(datas, function(kk,vv){
+                if(vv.type == 'upload'){
+                    var reader = new FileReader();
+                    reader.onload = function (b) {
+                        // console.log(v);
+                        var el = '<div class="col-6 col-lg-4 mb-2 img_chosed">'
+                        el += '<img src="'+b.target.result+'" id="output" class=""><div class="remove-images-upload-select" data-type="foto_produk" data-index="'+kk+'"><svg width="13px" height="13px" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"><path fill="#fff" d="M195.2 195.2a64 64 0 0 1 90.496 0L512 421.504 738.304 195.2a64 64 0 0 1 90.496 90.496L602.496 512 828.8 738.304a64 64 0 0 1-90.496 90.496L512 602.496 285.696 828.8a64 64 0 0 1-90.496-90.496L421.504 512 195.2 285.696a64 64 0 0 1 0-90.496z"/></svg></div>'
+                        el += '</div>';
+                        $('.button-add-images-fp').before(el);
+                    }
+                    reader.readAsDataURL(vv.data);
+                }else{
+                    var el = '<div class="col-6 col-lg-4 mb-2 img_chosed">'
+                    el += '<img src="'+vv.data+'" id="output" class=""><div class="remove-images-upload-select" data-type="foto_produk" data-index="'+kk+'"><svg width="13px" height="13px" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"><path fill="#fff" d="M195.2 195.2a64 64 0 0 1 90.496 0L512 421.504 738.304 195.2a64 64 0 0 1 90.496 90.496L602.496 512 828.8 738.304a64 64 0 0 1-90.496 90.496L512 602.496 285.696 828.8a64 64 0 0 1-90.496-90.496L421.504 512 195.2 285.696a64 64 0 0 1 0-90.496z"/></svg></div>'
+                    el += '</div>';
+                    $('.button-add-images-fp').before(el);
+                }
+            })
+        }
+    }
+
+
+
+    //look book
     const file_chose_storage = {};
+    const file_storage_deleted = {};
     var index_fils = 1;
-    var itemDefault = {type:null,data:null}
+    var index_delete = 1;
+    var itemDefault = {type:null,id_file:null,data:null}
+    var itemDefaultDelete = {id_media:null,type:null}
+    file_storage_deleted[index_delete] = itemDefaultDelete;
     file_chose_storage[index_fils] = itemDefault;
-    // 
     const renderFilePreview = function(data){
-        // var el;
-        // console.log(Object.keys(data).length);
         if(Object.keys(data).length <= max_allowed_pick_image2){
             if(Object.keys(data).length == max_allowed_pick_image2){
                 $('.button-add-images').addClass('d-none');
@@ -118,33 +164,48 @@ $(document).ready(function(){
                 $('.button-add-images').removeClass('d-none');
             }
             $('.list_image_lookbook').contents().not('.button-add-images').remove();
-            // console.log(data);
+            console.log(data)
             $.each(data, function(k,v){
                 if(v.type == 'upload'){
                     var reader = new FileReader();
                     reader.onload = function (b) {
                         // console.log(v);
                         var el = '<div class="col-6 col-lg-4 mb-2 img_chosed">'
-                        el += '<img src="'+b.target.result+'" id="output" class=""><div class="remove-images-upload-select" data-index="'+k+'"><svg width="13px" height="13px" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"><path fill="#fff" d="M195.2 195.2a64 64 0 0 1 90.496 0L512 421.504 738.304 195.2a64 64 0 0 1 90.496 90.496L602.496 512 828.8 738.304a64 64 0 0 1-90.496 90.496L512 602.496 285.696 828.8a64 64 0 0 1-90.496-90.496L421.504 512 195.2 285.696a64 64 0 0 1 0-90.496z"/></svg></div>'
+                        el += '<img src="'+b.target.result+'" id="output" class=""><div class="remove-images-upload-select" data-type="lookbook" data-index="'+k+'"><svg width="13px" height="13px" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"><path fill="#fff" d="M195.2 195.2a64 64 0 0 1 90.496 0L512 421.504 738.304 195.2a64 64 0 0 1 90.496 90.496L602.496 512 828.8 738.304a64 64 0 0 1-90.496 90.496L512 602.496 285.696 828.8a64 64 0 0 1-90.496-90.496L421.504 512 195.2 285.696a64 64 0 0 1 0-90.496z"/></svg></div>'
                         el += '</div>';
                         $('.button-add-images').before(el);
                     }
                     reader.readAsDataURL(v.data);
                 }else{
                     var el = '<div class="col-6 col-lg-4 mb-2 img_chosed">'
-                    el += '<img src="'+v.data+'" id="output" class=""><div class="remove-images-upload-select" data-index="'+k+'"><svg width="13px" height="13px" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"><path fill="#fff" d="M195.2 195.2a64 64 0 0 1 90.496 0L512 421.504 738.304 195.2a64 64 0 0 1 90.496 90.496L602.496 512 828.8 738.304a64 64 0 0 1-90.496 90.496L512 602.496 285.696 828.8a64 64 0 0 1-90.496-90.496L421.504 512 195.2 285.696a64 64 0 0 1 0-90.496z"/></svg></div>'
+                    el += '<img src="'+v.data+'" id="output" class=""><div class="remove-images-upload-select" data-type="lookbook" data-index="'+k+'"><svg width="13px" height="13px" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"><path fill="#fff" d="M195.2 195.2a64 64 0 0 1 90.496 0L512 421.504 738.304 195.2a64 64 0 0 1 90.496 90.496L602.496 512 828.8 738.304a64 64 0 0 1-90.496 90.496L512 602.496 285.696 828.8a64 64 0 0 1-90.496-90.496L421.504 512 195.2 285.696a64 64 0 0 1 0-90.496z"/></svg></div>'
                     el += '</div>';
                     $('.button-add-images').before(el);
                 }
             })
         }
     }
+    if($('.data_img_fotoproduk').length > 0){
+        var data_img_fotoproduk = jQuery.parseJSON($('.data_img_fotoproduk').val());
+        $.each(data_img_fotoproduk, function(k,v){
+            // console.log(v);
+            let newItem_FP = { ...FP_itemDefault }; 
+            newItem_FP.type = 'database';
+            newItem_FP.id_file = v.id_media;
+            newItem_FP.data = v.file_url;
+            file_FP_chose_storage[FP_index_fils] = newItem_FP;
+            FP_index_fils++
+        })
+        // console.log(file_FP_chose_storage);
+        renderFilePreview_FP(file_FP_chose_storage)
+    }
     if($('.data_img_lookbook').length > 0){
         var data_img_lookbook = jQuery.parseJSON($('.data_img_lookbook').val());
         $.each(data_img_lookbook, function(k,v){
             let newItem = { ...itemDefault }; 
             newItem.type = 'database';
-            newItem.data = v.file_path;
+            newItem.id_file = v.id_media;
+            newItem.data = v.file_url;
             // file_chose_storage[index_fils] = itemDefault;
             file_chose_storage[index_fils] = newItem;
             // file_chose_storage[index_fils].data = v.file_path
@@ -153,9 +214,12 @@ $(document).ready(function(){
         // console.log(file_chose_storage);
         renderFilePreview(file_chose_storage)
     }
+
     $(document).on('change','.upload-image-multi > .chosefile', async function(e){
         e.preventDefault(0);
         const { files } = e.target;
+        const type_file = $(this).data('type');
+        console.log(type_file);
         const dataTransfer = new DataTransfer();
         for (const file of files) {
             if (!file.type.startsWith('image')) {
@@ -174,13 +238,25 @@ $(document).ready(function(){
         // file_chose_storage.push(e.target.files);
         $('.button-add-images').removeClass('d-none');
         if (files.length){
-            if (!file_chose_storage[index_fils]) {
-                file_chose_storage[index_fils] = { ...itemDefault };
+            if(type_file == 'lookbook'){
+                if (!file_chose_storage[index_fils]) {
+                    file_chose_storage[index_fils] = { ...itemDefault };
+                }
+                file_chose_storage[index_fils].type = 'upload';
+                file_chose_storage[index_fils].id_file = index_fils;
+                file_chose_storage[index_fils].data = e.target.files[0]
+                index_fils++;
+                renderFilePreview(file_chose_storage)
+            }else{
+                if (!file_FP_chose_storage[FP_index_fils]) {
+                    file_FP_chose_storage[FP_index_fils] = { ...FP_itemDefault };
+                }
+                file_FP_chose_storage[FP_index_fils].type = 'upload';
+                file_FP_chose_storage[FP_index_fils].id_file = FP_index_fils;
+                file_FP_chose_storage[FP_index_fils].data = e.target.files[0]
+                FP_index_fils++;
+                renderFilePreview_FP(file_FP_chose_storage)
             }
-            file_chose_storage[index_fils].type = 'upload';
-            file_chose_storage[index_fils].data = e.target.files[0]
-            index_fils++;
-            renderFilePreview(file_chose_storage)
         }
         // console.log(file_chose_storage)
     })
@@ -191,8 +267,30 @@ $(document).ready(function(){
         const id_element = $(this).data('pick');
         var containers = $(this).data('container');
         var index_data = $(this).data('index');
-        delete file_chose_storage[index_data]
-        renderFilePreview(file_chose_storage);
+        var type = $(this).data('type');
+        if(type == 'lookbook'){
+
+            if (!file_storage_deleted[index_delete]) {
+                file_storage_deleted[index_delete] = { ...itemDefaultDelete };
+            }
+            file_storage_deleted[index_delete].id_media = file_chose_storage[index_data].id_file
+            file_storage_deleted[index_delete].type = file_chose_storage[index_data].type
+            index_delete++;
+            // console.log(file_chose_storage[index_data]);
+            // console.log(file_storage_deleted);
+            delete file_chose_storage[index_data]
+            renderFilePreview(file_chose_storage);
+        }else{
+            if (!file_FP_storage_deleted[FP_index_delete]) {
+                file_FP_storage_deleted[FP_index_delete] = { ...FP_itemDefaultDelete };
+            }
+            file_FP_storage_deleted[FP_index_delete].id_media = file_FP_chose_storage[index_data].id_file
+            file_FP_storage_deleted[FP_index_delete].type = file_FP_chose_storage[index_data].type
+            FP_index_delete++;
+            delete file_FP_chose_storage[index_data]
+            renderFilePreview_FP(file_FP_chose_storage);
+        }
+
         // if($('.picker_image_produk').children().length == max_allowed_pick_image){
         //     image_picker_el(image_picker_id);
         // }
@@ -229,10 +327,23 @@ $(document).ready(function(){
 
         var formData = new FormData($('#barcode_create')[0]);
         // file_chose_storage.forEach(file => {
-        $.each(file_chose_storage, function(k,v){
-            formData.append('lookbook[]', v.data);
-            console.log(v);
-        });
+        if(Object.keys(file_FP_chose_storage).length > 0){
+            $.each(file_FP_chose_storage, function(k,v){
+                formData.append('fotoproduk[]', v.data);
+            });
+        }
+        if(Object.keys(file_chose_storage).length > 0){
+            $.each(file_chose_storage, function(k,v){
+                formData.append('lookbook[]', v.data);
+            });
+        }
+        if(Object.keys(file_FP_storage_deleted).length > 0){
+            formData.append('deleted_file_fp', JSON.stringify(file_FP_storage_deleted));
+        }
+        if(Object.keys(file_storage_deleted).length > 0){
+            formData.append('deleted_file', JSON.stringify(file_storage_deleted));
+        }
+        // 
         // console.log(formData);
         $.ajax({
             url: form.attr("action"),

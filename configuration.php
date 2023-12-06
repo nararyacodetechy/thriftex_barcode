@@ -25,7 +25,7 @@ class SConfig
 	// var $_api_url = 'http://localhost:8000/my/ci3api/api/';
 
 	var $_table_prefix = 'tbl_';
-    var $_app_version = '1.0.4';
+    var $_app_version = '1.0.5';
 	
 
 	// icon

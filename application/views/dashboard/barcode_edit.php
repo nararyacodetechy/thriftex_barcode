@@ -25,7 +25,27 @@
                                     <input type="text" name="nama_produk" class="form-control p-3" id="nama_produk" required value="<?= (!empty($data_edit)) ? $data_edit->nama_produk :'' ?>">
                                 </div>
                             </div>
-                            <input type="file" name="produkimage[]" class="d-none">
+                            <textarea name="" id="" class="data_img_fotoproduk d-none form-control"><?= json_encode($data_img_fotoproduk) ?></textarea>
+                            <div class="mb-3 row">
+                                <label for="nama_produk" class="col-sm-2 col-form-label">Foto Produk</label>
+                                <div class="col-md-7 d-flex row">
+                                    <div class="list_image_foto_produk row">
+                                        <div class="col-6 col-lg-4 mb-2 button-add-images-fp">
+                                            <div class="upload-image-multi upload-btn-wrapper" data-max="3" >
+                                                <button class="btn">
+                                                    <svg width="30px" height="30px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M2 12.5001L3.75159 10.9675C4.66286 10.1702 6.03628 10.2159 6.89249 11.0721L11.1822 15.3618C11.8694 16.0491 12.9512 16.1428 13.7464 15.5839L14.0446 15.3744C15.1888 14.5702 16.7369 14.6634 17.7765 15.599L21 18.5001" stroke="#000000" stroke-width="1.5" stroke-linecap="round"/>
+                                                        <path d="M15 5.5H18.5M18.5 5.5H22M18.5 5.5V9M18.5 5.5V2" stroke="#000000" stroke-width="1.5" stroke-linecap="round"/>
+                                                        <path d="M22 12C22 16.714 22 19.0711 20.5355 20.5355C19.0711 22 16.714 22 12 22C7.28595 22 4.92893 22 3.46447 20.5355C2 19.0711 2 16.714 2 12C2 10.8717 2 9.87835 2.02008 9M12 2C7.28595 2 4.92893 2 3.46447 3.46447C3.03965 3.88929 2.73806 4.38921 2.52396 5" stroke="#000000" stroke-width="1.5" stroke-linecap="round"/>
+                                                    </svg>
+                                                    <p>Foto</p>
+                                                </button>
+                                                <input type="file" name="file" class="fotoimg chosefile" data-type="foto_produk" accept="capture=camera,image/*">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <textarea name="" id="" class="data_img_lookbook d-none form-control"><?= json_encode($data_img_lookbook) ?></textarea>
                             <div class="mb-3 row">
                                 <label for="nama_produk" class="col-sm-2 col-form-label">Look Book</label>
@@ -41,7 +61,7 @@
                                                     </svg>
                                                     <p>Foto</p>
                                                 </button>
-                                                <input type="file" name="file" class="fotoimg chosefile" accept="capture=camera,image/*">
+                                                <input type="file" name="file" class="fotoimg chosefile" data-type="lookbook" accept="capture=camera,image/*">
                                             </div>
                                         </div>
                                     </div>

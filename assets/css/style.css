@@ -118,17 +118,17 @@ body{
     padding-left: 6rem !important;
 }
 
-.list_image_lookbook img {
+.list_image_lookbook img,.list_image_foto_produk img {
 	width: 100%;
     max-height: 130px;
     height: 100%;
     object-fit: cover;
     border-radius: 5px;
 }
-.list_image_lookbook .img_chosed{
+.list_image_lookbook .img_chosed,.list_image_foto_produk .img_chosed{
 	position: relative;
 }
-.list_image_lookbook .remove-images-upload-select{
+.list_image_lookbook .remove-images-upload-select,.list_image_foto_produk .remove-images-upload-select{
 	position: absolute;
     top: -8px;
     right: 7px;
