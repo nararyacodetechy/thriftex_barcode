@@ -18,11 +18,11 @@ class SConfig
 	var $_site_url = 'http://localhost/verifex/thriftex_barcode/';
 	var $_host_name = 'localhost';
 	var $_site_name = 'thriftex';
-	var $_database_name = 'thriftex_maindb';
+	var $_database_name = 'thriftex';
 	var $_database_user = 'root';
 	var $_database_password = '';
 	var $_app_mode = 'development';
-	var $_api_url = 'http://localhost:8000/my/ci3api/api/';
+	var $_api_url = 'http://localhost/verifex/rest.thriftex.id/api/';
 
 	var $_table_prefix = 'tbl_';
 	var $_app_version = '1.0.5';
